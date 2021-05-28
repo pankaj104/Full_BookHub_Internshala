@@ -1,11 +1,14 @@
-package abc.com.bookhub
+package abc.com.bookhub.activity
 
-import android.content.Context
+import abc.com.bookhub.fragment.DashboardFragment
+import abc.com.bookhub.fragment.ProfileFragment
+import abc.com.bookhub.R
+import abc.com.bookhub.fragment.AboutFragment
+import abc.com.bookhub.fragment.FavouritesFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
        openDashboard()
 
 
-        val actionBarDrawerToggle= ActionBarDrawerToggle(this, drawerLayout,R.string.open_drawer,R.string.close_drawer)
+        val actionBarDrawerToggle= ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer)
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
@@ -113,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openDashboard(){
-        val fragment =DashboardFragment()
+        val fragment = DashboardFragment()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame, DashboardFragment())
             transaction.commit()
