@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:padding="4dp"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_ratings"
+        android:drawableLeft="@drawable/ic_rating"
         android:textColor="#ffca28"
         android:text="4.5"
         android:drawablePadding="4dp"
