@@ -10,11 +10,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -33,7 +33,8 @@ import java.net.URL
 class DashboardFragment : Fragment() {
     lateinit var recyclerDashboard: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
-    lateinit var btnCheckInternet: Button
+    lateinit var progressLayout: RelativeLayout
+    lateinit var progressBar : ProgressBar
     val bookInfoList= arrayListOf<Book>()
    // lateinit var bookInfoList: ArrayListOf<Book>
 
@@ -57,37 +58,19 @@ class DashboardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
 
+
+        // Inflate the layout for this fragment
         val view= inflater.inflate(R.layout.fragment_dashboard, container, false)
+        setHasOptionsMenu(true)  // for display sort menu only incase fragment
         recyclerDashboard = view.findViewById(R.id.recyclerDashboard)
 
 
         // check internet through click button
-        btnCheckInternet=view.findViewById(R.id.btnCheckInternet)
-        btnCheckInternet.setOnClickListener {
 
-
-            if (ConnectionManager().checkConnectivity(activity as Context))
-            {
-                // set Dialog on click button
-val dialog=AlertDialog.Builder(activity as Context)
-                dialog.setTitle("Success")
-                dialog.setMessage("Internet Connection Found")
-                dialog.setPositiveButton("OK"){text,listener ->
-                    //Do nothing
-                }
-                dialog.setNegativeButton("Cancel"){text,listener->
-                    //Do nothing
-                }
-                dialog.create()
-                dialog.show()
-            }
-            else
-            {
-
-            }
-        }
+        progressBar= view.findViewById(R.id.progressBar)
+        progressLayout=view.findViewById(R.id.progressLayout)
+        progressLayout.visibility= View.VISIBLE
 
         layoutManager=LinearLayoutManager(activity)
 
@@ -104,6 +87,7 @@ val dialog=AlertDialog.Builder(activity as Context)
                 // try catche for resolve JSON exception and response can be corrupted
 
                 try {
+                    progressLayout.visibility=View.GONE
                     val success =it.getBoolean("success")
                     if (success)
                     {
@@ -126,12 +110,7 @@ val dialog=AlertDialog.Builder(activity as Context)
                             recyclerDashboard.adapter=recyclerAdapter
                             recyclerDashboard.layoutManager= layoutManager
 
-                            recyclerDashboard.addItemDecoration(
-                                    DividerItemDecoration(
-                                            recyclerDashboard.context,
-                                            (layoutManager as LinearLayoutManager).orientation
-                                    )
-                            )
+
                         }
                     }
 
@@ -147,8 +126,11 @@ val dialog=AlertDialog.Builder(activity as Context)
 
             },Response.ErrorListener {
                 // here the handle error response
+                if (activity != null) {
 
-               Toast.makeText(activity as Context,"Volley error occurred !!!", Toast.LENGTH_SHORT).show()
+
+                    Toast.makeText(activity as Context, "Volley error occurred !!!", Toast.LENGTH_SHORT).show()
+                }
             }
             ){
                 override fun getHeaders(): MutableMap<String, String> {
@@ -183,5 +165,7 @@ else
 
     }
 
-
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater?. inflate(R.menu.menu_dashboard, menu)
+    }
     }
